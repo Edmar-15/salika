@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Sali Ka?{% endblock title %}
+
+
+{% block content %}
+<div class="body-center">
+    <div class="container">
+        <h1>Sali Ka?</h1>
+        <button onclick="window.location.href='{{ url_for('offline') }}'">Play Offline</button>
+        <button>Play Online</button>
+    </div>
+</div>
+{% endblock %}
