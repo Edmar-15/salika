@@ -8,6 +8,8 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/assets/icon.png') }}" type="image/x-icon">
 </head>
 <body>
-    {% block content %}{% endblock %}
+    <div class="app-shell">
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

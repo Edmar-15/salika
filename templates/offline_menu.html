@@ -1,16 +1,488 @@
 {% extends "base.html" %}
 
-{% block title %}Sali Ka?{% endblock title %}
-
+{% block title %}Game Setup - Salika{% endblock title %}
 
 {% block content %}
-<div class="body-center">
-    <div class="container">
-        <h1>Sali Ka?</h1>
-        <button>Dama</button>
-        <button>Sungka</button>
-        <button>Salpakan</button>
-        <button onclick="window.location.href='{{ url_for('mainMenu') }}'">Return to Menu</button>
-    </div>
+<div class="home-layout">
+    <header class="top-container">
+    </header>
+
+    <main class="home-main">
+        <div class="hero-section">
+            <div class="featured-board">
+                <div class="board-container">
+                    <div class="board-preview">
+                        <img id="gamePreview" src="/static/img/dama-board.png" alt="Game Board Preview">
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-content">
+                <h1 id="gameTitle">Prepare Your Game</h1>
+                <p id="gameDescription">Choose your game mode, select your side, and set the difficulty level.</p>
+
+                <div class="settings-section">
+                    <div class="settings-field">
+                        <label class="field-label" for="gameSelect">Select Game</label>
+                        <select id="gameSelect">
+                            <option value="dama">Dama (Checkers)</option>
+                            <option value="sungka">Sungka</option>
+                            <option value="sangkalan">Sangkalan</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-field">
+                        <span class="field-label">Game Mode</span>
+                        <label class="option-inline">
+                            <input type="radio" name="gameMode" value="human" checked> Human vs Human
+                        </label>
+                        <label class="option-inline">
+                            <input type="radio" name="gameMode" value="ai"> Human vs AI
+                        </label>
+                    </div>
+
+                    <div class="settings-field ai-only">
+                        <label class="field-label" for="playerColor">Your Side</label>
+                        <select id="playerColor">
+                            <option value="1">Red (First)</option>
+                            <option value="2">Blue (Second)</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-field ai-only">
+                        <label class="field-label" for="difficultySelect">AI Difficulty</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="button-group-hero">
+                    <button id="playDama" class="btn-primary">Play Game</button>
+                    <button onclick="window.location.href='{{ url_for('mainMenu') }}'" class="btn-secondary">Return</button>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
+
+<style>
+    .home-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        min-height: 100dvh;
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .home-layout::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(129, 199, 132, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .top-container {
+        background: rgba(20, 30, 50, 0.6);
+        padding: 16px 24px;
+        border-bottom: 1px solid rgba(129, 199, 132, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .home-main {
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 40px;
+    }
+
+    .hero-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        max-width: 1400px;
+        width: 100%;
+    }
+
+    .featured-board {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1000px;
+    }
+
+    .board-container {
+        background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(30, 30, 30, 0.9));
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow:
+            0 24px 64px rgba(0, 0, 0, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(129, 199, 132, 0.2);
+        transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
+        transition: transform 0.6s ease;
+        transform-style: preserve-3d;
+    }
+
+    .board-container:hover {
+        transform: perspective(1200px) rotateY(0deg) rotateX(0deg);
+    }
+
+    .board-preview {
+        width: 420px;
+        height: 420px;
+        background:
+            radial-gradient(ellipse at center, rgba(101, 67, 33, 0.9) 0%, rgba(85, 54, 24, 0.95) 50%, rgba(64, 41, 18, 1) 100%),
+            linear-gradient(45deg,
+                rgba(139, 90, 43, 0.1) 0%,
+                transparent 25%,
+                transparent 75%,
+                rgba(139, 90, 43, 0.1) 100%);
+        background-size: 100% 100%, 20px 20px;
+        border-radius: 18px;
+        box-shadow:
+            0 18px 40px rgba(0, 0, 0, 0.35),
+            inset 0 4px 20px rgba(255, 255, 255, 0.06),
+            inset 0 -4px 20px rgba(0, 0, 0, 0.2),
+            inset 4px 0 20px rgba(0, 0, 0, 0.1),
+            inset -4px 0 20px rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 4px solid #8B5A2B;
+        transform: rotateX(10deg) rotateY(-5deg);
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+        position: relative;
+    }
+
+    .board-preview::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 12px,
+                rgba(139, 90, 43, 0.1) 12px,
+                rgba(139, 90, 43, 0.1) 14px
+            ),
+            repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 12px,
+                rgba(101, 67, 33, 0.05) 12px,
+                rgba(101, 67, 33, 0.05) 14px
+            );
+        pointer-events: none;
+        border-radius: 18px;
+    }
+
+    .board-preview:hover {
+        transform: rotateX(0deg) rotateY(0deg);
+    }
+
+    .board-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .hero-content h1 {
+        font-size: 3rem;
+        line-height: 1.2;
+        color: #f0f0f0;
+        font-weight: 700;
+        background: linear-gradient(135deg, #81c784 0%, #a5d6a7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-content p {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #e3e3e3;
+    }
+
+    .settings-section {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .settings-field {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(129, 199, 132, 0.2);
+        border-radius: 12px;
+        padding: 18px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .settings-field:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(129, 199, 132, 0.4);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .field-label {
+        color: #81c784;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .option-inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #f0f0f0;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .option-inline:hover {
+        color: #81c784;
+    }
+
+    .option-inline input {
+        accent-color: #81c784;
+        cursor: pointer;
+        width: 18px;
+        height: 18px;
+    }
+
+    select {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid rgba(129, 199, 132, 0.3);
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #f0f0f0;
+        outline: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    select:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: #81c784;
+        box-shadow: 0 0 12px rgba(129, 199, 132, 0.2);
+    }
+
+    select:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(129, 199, 132, 0.5);
+        transform: translateY(-1px);
+    }
+
+    /* Style the dropdown options */
+    select option {
+        background: rgba(20, 30, 50, 0.95);
+        color: #f0f0f0;
+        padding: 8px;
+        font-weight: 600;
+    }
+
+    select option:hover,
+    select option:focus {
+        background: rgba(129, 199, 132, 0.2);
+        color: #81c784;
+    }
+
+    .ai-only {
+        display: none;
+    }
+
+    .button-group-hero {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+    }
+
+    .btn-primary {
+        flex: 1;
+        padding: 16px 32px;
+        background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 12px 32px rgba(129, 199, 132, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: left 0.3s ease;
+    }
+
+    .btn-primary:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #66bb6a 0%, #52a849 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 16px 40px rgba(129, 199, 132, 0.4);
+    }
+
+    .btn-secondary {
+        flex: 1;
+        padding: 16px 32px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #e3e3e3;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 1024px) {
+        .hero-section {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .hero-content h1 {
+            font-size: 2.4rem;
+        }
+
+        .button-group-hero {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    const modeRadios = document.querySelectorAll('input[name="gameMode"]');
+    const aiFields = document.querySelectorAll('.ai-only');
+    const gameSelect = document.getElementById('gameSelect');
+    const playerColor = document.getElementById('playerColor');
+    const difficultySelect = document.getElementById('difficultySelect');
+    const playButton = document.getElementById('playDama');
+    const gameTitle = document.getElementById('gameTitle');
+    const gameDescription = document.getElementById('gameDescription');
+    const gamePreview = document.getElementById('gamePreview');
+
+    const gameData = {
+        dama: {
+            title: "Master the Classic Dama",
+            description: "Experience the strategic depth of Filipino Checkers. Outmaneuver your opponent with tactical captures and king promotions in this timeless board game.",
+            preview: "/static/img/dama-board.png"
+        },
+        sungka: {
+            title: "Conquer with Sungka",
+            description: "Engage in the ancient art of Sungka, a traditional Filipino game of skill and strategy. Distribute shells wisely to capture your opponent's pieces and claim victory.",
+            preview: "/static/img/sungka-board.png"
+        },
+        sangkalan: {
+            title: "Dominate Sangkalan",
+            description: "Challenge your mind with Sangkalan, a dynamic Filipino board game combining strategy and chance. Navigate the board skillfully to outscore your opponent.",
+            preview: "/static/img/sangkalan-board.png"
+        }
+    };
+
+    function updateGameContent() {
+        const selectedGame = gameSelect.value;
+        const data = gameData[selectedGame];
+
+        gameTitle.textContent = data.title;
+        gameDescription.textContent = data.description;
+        gamePreview.src = data.preview;
+        gamePreview.alt = `${selectedGame.charAt(0).toUpperCase() + selectedGame.slice(1)} Board Preview`;
+    }
+
+    function updateVisibility() {
+        const aiEnabled = document.querySelector('input[name="gameMode"]:checked').value === 'ai';
+        aiFields.forEach(field => {
+            field.style.display = aiEnabled ? 'flex' : 'none';
+        });
+    }
+
+    function startGame() {
+        const game = gameSelect.value;
+        const mode = document.querySelector('input[name="gameMode"]:checked').value;
+
+        let url;
+        if (game === 'dama') {
+            url = '{{ url_for('dama') }}?mode=' + mode;
+            if (mode === 'ai') {
+                url += '&player=' + playerColor.value;
+                url += '&difficulty=' + difficultySelect.value;
+            }
+        } else if (game === 'sungka') {
+            url = '{{ url_for('sungka') }}?mode=' + mode;
+            if (mode === 'ai') {
+                url += '&difficulty=' + difficultySelect.value;
+            }
+        } else if (game === 'sangkalan') {
+            url = '{{ url_for('sangkalan') }}?mode=' + mode;
+            if (mode === 'ai') {
+                url += '&difficulty=' + difficultySelect.value;
+            }
+        }
+
+        window.location.href = url;
+    }
+
+    modeRadios.forEach(radio => radio.addEventListener('change', updateVisibility));
+    gameSelect.addEventListener('change', updateGameContent);
+    playButton.addEventListener('click', startGame);
+
+    updateVisibility();
+    updateGameContent();
+</script>
 {% endblock %}

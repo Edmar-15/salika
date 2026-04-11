@@ -18,6 +18,20 @@ def offlineMenu():
     return render_template('offline_menu.html')
 
 
+@app.route('/salika/offline/dama', endpoint='dama')
+def play_dama():
+    return render_template('dama.html')
+
+
+@app.route('/salika/offline/sungka', endpoint='sungka')
+def play_sungka():
+    return render_template('sungka.html')
+
+
+@app.route('/salika/offline/sangkalan', endpoint='sangkalan')
+def play_sangkalan():
+    return render_template('sangkalan.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

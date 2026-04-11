@@ -1,14 +1,323 @@
 {% extends "base.html" %}
 
-{% block title %}Sali Ka?{% endblock title %}
-
+{% block title %}Salika - Play Dama Online{% endblock %}
 
 {% block content %}
-<div class="body-center">
-    <div class="container">
-        <h1>Sali Ka?</h1>
-        <button onclick="window.location.href='{{ url_for('offline') }}'">Play Offline</button>
-        <button>Play Online</button>
-    </div>
+<div class="home-layout">
+    <header class="top-container">
+    </header>
+
+    <main class="home-main">
+        <div class="hero-section">
+            <div class="featured-board">
+                <div class="board-container">
+                    <div class="board-preview">
+                        <div class="carousel">
+                            <img class="carousel-image" src="/static/img/dama-board-1.png" alt="Dama board preview 1">
+                            <img class="carousel-image" src="/static/img/sungka-board.png" alt="Sungka board preview 2">
+                            <img class="carousel-image" src="/static/img/sangkalan-board.png" alt="Sangkalan board preview 3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-content">
+                <h1>Play Filipino Board Games<br>Online on Salika!</h1>
+                <p>Discover the rich heritage of Filipino board games. From the strategic depth of Dama to the ancient wisdom of Sungka and the dynamic challenge of Sangkalan, experience traditional games that have captivated generations.</p>
+                <div class="button-group-hero">
+                    <button class="btn-primary" onclick="window.location.href='{{ url_for('offline') }}'">Play Games</button>
+                    <button class="btn-secondary" disabled>Play Online</button>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
+
+<style>
+    .home-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        min-height: 100dvh;
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .home-layout::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(129, 199, 132, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .top-container {
+        background: rgba(20, 30, 50, 0.6);
+        padding: 16px 24px;
+        border-bottom: 1px solid rgba(129, 199, 132, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .button-group {
+        display: flex;
+        gap: 16px;
+    }
+
+    .btn-play-offline,
+    .btn-play-online {
+        padding: 14px 32px;
+        background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 24px rgba(129, 199, 132, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-play-offline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: left 0.3s ease;
+    }
+
+    .btn-play-offline:hover::before {
+        left: 100%;
+    }
+
+    .btn-play-offline:hover {
+        background: linear-gradient(135deg, #66bb6a 0%, #52a849 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(129, 199, 132, 0.4);
+    }
+
+    .btn-play-online {
+        background: rgba(255, 255, 255, 0.08);
+        color: #b0b8c1;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: none;
+    }
+
+    .btn-play-online:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-play-online:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .home-main {
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 40px;
+        position: relative;
+    }
+
+    .hero-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        max-width: 1400px;
+        width: 100%;
+    }
+
+    .featured-board {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1000px;
+    }
+
+    .board-container {
+        background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(30, 30, 30, 0.9));
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(129, 199, 132, 0.2);
+        transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
+        transition: transform 0.6s ease;
+    }
+
+    .board-container:hover {
+        transform: perspective(1200px) rotateY(0deg) rotateX(0deg);
+    }
+
+    .board-preview {
+        width: 420px;
+        height: 420px;
+        background: linear-gradient(180deg, #6f4b27 0%, #7c5f3e 50%, #5f4328 100%);
+        border-radius: 18px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35), inset 0 4px 20px rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .carousel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .carousel-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        animation: fadeCarousel 24s infinite ease-in-out;
+    }
+
+    .carousel-image:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .carousel-image:nth-child(2) {
+        animation-delay: 8s;
+    }
+
+    .carousel-image:nth-child(3) {
+        animation-delay: 16s;
+    }
+
+    @keyframes fadeCarousel {
+        0%, 20%, 100% {
+            opacity: 0;
+        }
+        25%, 45% {
+            opacity: 1;
+        }
+        50%, 95% {
+            opacity: 0;
+        }
+    }
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+    }
+
+    .hero-content h1 {
+        font-size: 3.2rem;
+        line-height: 1.2;
+        color: #f0f0f0;
+        font-weight: 700;
+        background: linear-gradient(135deg, #81c784 0%, #a5d6a7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #b0b8c1;
+    }
+
+    .button-group-hero {
+        display: flex;
+        gap: 16px;
+        margin-top: 12px;
+    }
+
+    .btn-primary {
+        padding: 16px 40px;
+        background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 12px 32px rgba(129, 199, 132, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: left 0.3s ease;
+    }
+
+    .btn-primary:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #66bb6a 0%, #52a849 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 16px 40px rgba(129, 199, 132, 0.4);
+    }
+
+    .btn-secondary {
+        padding: 16px 40px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #b0b8c1;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: not-allowed;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    @media (max-width: 1024px) {
+        .hero-section {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .hero-content h1 {
+            font-size: 2.4rem;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .btn-play-offline,
+        .btn-play-online {
+            width: 100%;
+        }
+    }
+</style>
 {% endblock %}
