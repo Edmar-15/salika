@@ -27,7 +27,7 @@
                         <select id="gameSelect">
                             <option value="dama">Dama (Checkers)</option>
                             <option value="sungka">Sungka</option>
-                            <option value="sangkalan">Sangkalan</option>
+                            <option value="game_of_generals">Game of Generals</option>
                         </select>
                     </div>
 
@@ -428,10 +428,10 @@
             description: "Engage in the ancient art of Sungka, a traditional Filipino game of skill and strategy. Distribute shells wisely to capture your opponent's pieces and claim victory.",
             preview: "/static/img/sungka-board.png"
         },
-        sangkalan: {
-            title: "Dominate Sangkalan",
-            description: "Challenge your mind with Sangkalan, a dynamic Filipino board game combining strategy and chance. Navigate the board skillfully to outscore your opponent.",
-            preview: "/static/img/sangkalan-board.png"
+        game_of_generals: {
+            title: "Dominate Game of Generals",
+            description: "Challenge your mind with Game of Generals, a dynamic Filipino board game combining strategy and chance. Navigate the board skillfully to outscore your opponent.",
+            preview: "/static/img/game_of_generals-board.png"
         }
     };
 
@@ -442,14 +442,29 @@
         gameTitle.textContent = data.title;
         gameDescription.textContent = data.description;
         gamePreview.src = data.preview;
-        gamePreview.alt = `${selectedGame.charAt(0).toUpperCase() + selectedGame.slice(1)} Board Preview`;
+        const selectedName = selectedGame === 'game_of_generals' ? 'Game of Generals' : selectedGame.charAt(0).toUpperCase() + selectedGame.slice(1);
+        gamePreview.alt = `${selectedName} Board Preview`;
     }
 
     function updateVisibility() {
+        const game = gameSelect.value;
         const aiEnabled = document.querySelector('input[name="gameMode"]:checked').value === 'ai';
         aiFields.forEach(field => {
             field.style.display = aiEnabled ? 'flex' : 'none';
         });
+
+        // Hide human mode for sungka and game_of_generals
+        const humanRadio = document.querySelector('input[name="gameMode"][value="human"]');
+        const humanLabel = humanRadio.parentElement;
+        if (game === 'sungka' || game === 'game_of_generals') {
+            humanLabel.style.display = 'none';
+            if (document.querySelector('input[name="gameMode"]:checked').value === 'human') {
+                document.querySelector('input[name="gameMode"][value="ai"]').checked = true;
+                updateVisibility(); // Recurse to update ai fields
+            }
+        } else {
+            humanLabel.style.display = 'flex';
+        }
     }
 
     function startGame() {
@@ -468,8 +483,8 @@
             if (mode === 'ai') {
                 url += '&difficulty=' + difficultySelect.value;
             }
-        } else if (game === 'sangkalan') {
-            url = '{{ url_for('sangkalan') }}?mode=' + mode;
+        } else if (game === 'game_of_generals') {
+            url = '{{ url_for('game_of_generals') }}?mode=' + mode;
             if (mode === 'ai') {
                 url += '&difficulty=' + difficultySelect.value;
             }

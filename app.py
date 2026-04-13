@@ -28,9 +28,9 @@ def play_sungka():
     return render_template('sungka.html')
 
 
-@app.route('/salika/offline/sangkalan', endpoint='sangkalan')
-def play_sangkalan():
-    return render_template('sangkalan.html')
+@app.route('/salika/offline/game-of-generals', endpoint='game_of_generals')
+def play_game_of_generals():
+    return render_template('game_of_generals.html')
 
 
 if __name__ == '__main__':
