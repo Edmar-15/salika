@@ -1,0 +1,46 @@
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #f4f4f4;
+}
+
+#board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* rows */
+.row {
+  display: grid;
+  grid-template-columns: repeat(7, 70px);
+  gap: 10px;
+}
+
+/* pits */
+.pit {
+  width: 70px;
+  height: 70px;
+  background: #7e4d1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.pit:hover {
+  transform: scale(1.05);
+  background: #bbb;
+}
+
+/* stores */
+.store {
+  width: 80px;
+  height: 120px;
+  background: gold;
+}

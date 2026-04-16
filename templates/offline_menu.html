@@ -61,7 +61,7 @@
 
                 <div class="button-group-hero">
                     <button id="playDama" class="btn-primary">Play Game</button>
-                    <button onclick="window.location.href='{{ url_for('mainMenu') }}'" class="btn-secondary">Return</button>
+                    <button onclick="window.location.href='{{ url_for('main.home') }}'" class="btn-secondary">Return</button>
                 </div>
             </div>
         </div>
@@ -473,18 +473,18 @@
 
         let url;
         if (game === 'dama') {
-            url = '{{ url_for('dama') }}?mode=' + mode;
+            url = '{{ url_for('main.dama') }}?mode=' + mode;
             if (mode === 'ai') {
                 url += '&player=' + playerColor.value;
                 url += '&difficulty=' + difficultySelect.value;
             }
         } else if (game === 'sungka') {
-            url = '{{ url_for('sungka') }}?mode=' + mode;
+            url = '{{ url_for('main.sungka') }}?mode=' + mode;
             if (mode === 'ai') {
                 url += '&difficulty=' + difficultySelect.value;
             }
         } else if (game === 'game_of_generals') {
-            url = '{{ url_for('game_of_generals') }}?mode=' + mode;
+            url = '{{ url_for('main.generals') }}?mode=' + mode;
             if (mode === 'ai') {
                 url += '&difficulty=' + difficultySelect.value;
             }

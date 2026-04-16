@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Sungka{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/sungka.css') }}">{% endblock %}
+{% block content %}
+    <h1>Sungka</h1>
+
+  <div id="info">
+    <p>Turn: <span id="turn">-</span></p>
+  </div>
+
+  <div id="board"></div>
+
+  <button id="menuBtn">Return to Menu</button>
+
+    <script src="{{ url_for('static', filename='js/sungka.js') }}"></script>
+{% endblock %}

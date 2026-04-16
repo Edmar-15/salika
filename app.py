@@ -1,37 +1,12 @@
-from flask import Flask, render_template    # type: ignore
+from flask import Flask
+from routes.main_routes import main_bp
+from routes.sungka_routes import sungka_bp
 
 app = Flask(__name__)
 
+# register route modules
+app.register_blueprint(main_bp)
+app.register_blueprint(sungka_bp)
 
-@app.route('/', endpoint='mainMenu')
-def home():
-    return render_template('welcome.html')
-
-
-@app.route('/salika/login', endpoint='login')
-def login():
-    return 'This is login page'
-
-
-@app.route('/salika/offline', endpoint='offline')
-def offlineMenu():
-    return render_template('offline_menu.html')
-
-
-@app.route('/salika/offline/dama', endpoint='dama')
-def play_dama():
-    return render_template('dama.html')
-
-
-@app.route('/salika/offline/sungka', endpoint='sungka')
-def play_sungka():
-    return render_template('sungka.html')
-
-
-@app.route('/salika/offline/game-of-generals', endpoint='game_of_generals')
-def play_game_of_generals():
-    return render_template('game_of_generals.html')
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
