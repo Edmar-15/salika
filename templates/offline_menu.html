@@ -456,15 +456,7 @@
         // Hide human mode for sungka and game_of_generals
         const humanRadio = document.querySelector('input[name="gameMode"][value="human"]');
         const humanLabel = humanRadio.parentElement;
-        if (game === 'sungka' || game === 'game_of_generals') {
-            humanLabel.style.display = 'none';
-            if (document.querySelector('input[name="gameMode"]:checked').value === 'human') {
-                document.querySelector('input[name="gameMode"][value="ai"]').checked = true;
-                updateVisibility(); // Recurse to update ai fields
-            }
-        } else {
-            humanLabel.style.display = 'flex';
-        }
+        humanLabel.style.display = 'flex';
     }
 
     function startGame() {
